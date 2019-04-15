@@ -25,7 +25,7 @@ mongoose
 			.env.MONGO_DB}?retryWrites=true`
 	)
 	.then()
-	.catch((err) => {
+	.catch(err => {
 		console.log(err)
 	})
 
