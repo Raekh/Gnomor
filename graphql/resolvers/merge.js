@@ -44,7 +44,7 @@ const events = async eventIds => {
 const singleEvent = async eventId => {
 	try {
 		const event = await Event.findById(eventId)
-		return transformStream(event)
+		return transformEvent(event)
 	} catch (err) {
 		throw err
 	}
@@ -66,3 +66,4 @@ const user = async userId => {
 exports.transformBooking = transformBooking
 exports.transformEvent = transformEvent
 exports.transformUser = transformUser
+exports.dateToString = dateToString

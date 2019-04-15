@@ -1,7 +1,7 @@
 const Event = require('../../models/event')
 const User = require('../../models/user')
 
-const { transformEvent } = require('./merge')
+const { transformEvent, dateToString } = require('./merge')
 
 module.exports = {
 	events      : async () => {
@@ -35,7 +35,7 @@ module.exports = {
 			if (!creator) {
 				throw new Error('User not found')
 			}
-			creator.createdEvent.push(event)
+			creator.createdEvents.push(event)
 			await creator.save()
 			return createdEvent
 		} catch (err) {
