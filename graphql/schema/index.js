@@ -25,7 +25,7 @@ module.exports = buildSchema(`
 		}
 
 		type AuthData {
-			userid: ID!
+			userId: ID!
 			token: String!
 			tokenExpiration: Int!
 		}
