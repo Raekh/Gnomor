@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
 
 import './Auth.css'
+import AuthContext from '../context/auth-context'
 
 class AuthPage extends Component {
 	state = {
 		isLogin : true
 	}
-	constructor (props) {
+
+	static contextType = AuthContext
+
+	constructor(props) {
 		super(props)
 		this.emailEl = React.createRef()
 		this.passwordEl = React.createRef()
@@ -69,14 +73,19 @@ class AuthPage extends Component {
 				return res.json()
 			})
 			.then(resData => {
-				console.log(resData)
+				if (this.state.isLogin) {
+					if (resData.data.login.token) {
+						let { token, userId, tokenExpiration } = resData.data.login
+						this.context.login(token, userId, tokenExpiration)
+					}
+				}
 			})
 			.catch(err => {
 				console.log(err)
 			})
 	}
 
-	render () {
+	render() {
 		return (
 			<form className="auth-form" onSubmit={this.submitHandler}>
 				<div className="form-control">
