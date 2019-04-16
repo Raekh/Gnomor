@@ -3,3 +3,46 @@ body {
   padding: 0;
   font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
+
+
+.form-control label,
+.form-control input {
+  width: 100%;
+  display: block;
+}
+
+.form-control label {
+  margin-bottom: 0.5rem;
+}
+
+
+.form-control {
+  margin-bottom: 1rem;
+}
+
+.form-actions button,
+.btn {
+  outline: none;
+  user-select: none;
+  transition: all ease 0.2s;
+  background: transparent;
+  color: #01d1d1;
+  font-weight: bold;
+  font: inherit;
+  border: 3px solid #01d1d1;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px rgb(0, 0, 0, 0.1);
+}
+
+.form-actions button:hover,
+.btn:hover {
+  background: #01d1d1;
+  color: white;
+}
+
+.form-actions button:active,
+.btn:active {
+  filter: brightness(0.8);
+}

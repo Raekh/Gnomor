@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { NavLink } from 'react-router-dom'
 
 import './MainNavigation.css'
@@ -23,9 +23,14 @@ const mainNavigation = props => (
 								<NavLink to="/events">Events</NavLink>
 							</li>
 							{context.token && (
-								<li>
-									<NavLink to="/bookings">Bookings</NavLink>
-								</li>
+								<Fragment>
+									<li>
+										<NavLink to="/bookings">Bookings</NavLink>
+									</li>
+									<li>
+										<button onClick={context.logout}>Logout</button>
+									</li>
+								</Fragment>
 							)}
 						</ul>
 					</nav>
