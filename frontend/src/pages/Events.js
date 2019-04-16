@@ -6,7 +6,7 @@ import './Events.css'
 import AuthContext from '../context/auth-context'
 
 class EventsPage extends Component {
-	constructor(props) {
+	constructor (props) {
 		super(props)
 		this.state = {
 			creating : false,
@@ -18,7 +18,7 @@ class EventsPage extends Component {
 		this.descriptionEl = React.createRef()
 	}
 
-	componentDidMount() {
+	componentDidMount () {
 		this.fetchEvents()
 	}
 
@@ -96,8 +96,8 @@ class EventsPage extends Component {
 			query : `
 			mutation {
 				createEvent(eventInput: {
-					title: "${title},
-					description: "${description},
+					title: "${title}",
+					description: "${description}",
 					price: ${price},
 					date: "${date}"
 				})
@@ -115,6 +115,8 @@ class EventsPage extends Component {
 			}
 			`
 		}
+
+		console.log(requestBody)
 
 		fetch('http://localhost:8000/graphql', {
 			method  : 'POST',
@@ -143,7 +145,7 @@ class EventsPage extends Component {
 		this.setState({ creating: false })
 	}
 
-	render() {
+	render () {
 		return (
 			<Fragment>
 				{this.state.creating && <Backdrop />}

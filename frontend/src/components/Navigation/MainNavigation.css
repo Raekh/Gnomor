@@ -31,7 +31,8 @@
 	margin: 0 1rem;
 }
 
-.main-navigation__items a {
+.main-navigation__items a,
+.main-navigation__items button {
 	transition: all ease 0.2s;
 	text-decoration: none;
 	color: white;
@@ -40,7 +41,10 @@
 
 .main-navigation__items a:hover,
 .main-navigation__items a:active,
-.main-navigation__items a.active {
+.main-navigation__items a.active,
+.main-navigation__items button:hover,
+.main-navigation__items button:active,
+.main-navigation__items button.active {
 	/* color: #fdefa0; */
 	color: #01d1d1;
 	background: white;

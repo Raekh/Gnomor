@@ -7,16 +7,16 @@ class AuthPage extends Component {
 	// state = {
 	// 	isLogin : true
 	// }
-
 	static contextType = AuthContext
 
-	constructor(props) {
+	constructor (props) {
 		super(props)
 		this.emailEl = React.createRef()
 		this.passwordEl = React.createRef()
 		this.state = {
 			isLogin : true
 		}
+		console.log('%c context', 'color:orange', this.context)
 	}
 
 	handleSwitch = () => {
@@ -37,7 +37,7 @@ class AuthPage extends Component {
 		}
 		let requestBody = {
 			query : `
-			{
+			query{
 				login(email: "${email}", password: "${password}"){
 					userId
 					token
@@ -79,8 +79,11 @@ class AuthPage extends Component {
 			.then(resData => {
 				if (this.state.isLogin) {
 					if (resData.data.login.token) {
+						console.log('%c resdata', 'color:orange', resData.data.login)
 						let { token, userId, tokenExpiration } = resData.data.login
+						console.log('%c token', 'color:red', token)
 						this.context.login(token, userId, tokenExpiration)
+						console.log(this.context)
 					}
 				}
 			})
@@ -89,7 +92,7 @@ class AuthPage extends Component {
 			})
 	}
 
-	render() {
+	render () {
 		return (
 			<form className="auth-form" onSubmit={this.submitHandler}>
 				<div className="form-control">

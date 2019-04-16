@@ -40,7 +40,7 @@ mongoose
 	)
 	.then(() => {
 		app.listen(8000)
-		console.lot('Listening on 8000<')
+		console.log('Listening on 8000')
 	})
 	.catch(err => {
 		console.log(err)

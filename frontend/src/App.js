@@ -17,16 +17,14 @@ class App extends Component {
 	}
 
 	login = (token, userId, tokenExpiration) => {
-		this.setState({ token, userId })
+		this.setState({ token, userId, tokenExpiration })
 	}
 
-	login = (token, userId, tokenExpiration) => {
-		this.setState({ token: null, userId: null })
+	logout = () => {
+		this.setState({ token: null, userId: null, tokenExpiration: null })
 	}
 
-	logout = () => {}
-
-	render() {
+	render () {
 		return (
 			<BrowserRouter>
 				<Fragment>
