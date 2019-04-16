@@ -9,7 +9,8 @@ class EventsPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			creating : false
+			creating : false,
+			events   : []
 		}
 		this.titleEl = React.createRef()
 		this.priceEl = React.createRef()
@@ -72,8 +73,7 @@ class EventsPage extends Component {
 
 	modalConfirmHandler = () => {
 		this.setState({
-			creating : false,
-			events   : []
+			creating : false
 		})
 		const title = this.titleEl.current.value
 		const date = this.dateEl.current.value
@@ -191,7 +191,7 @@ class EventsPage extends Component {
 							</li>
 						)
 					})}
-					<li className="events__list-item">Item</li>
+					{this.state.events.length === 0 && <li className="events__list-item">No events.</li>}
 				</ul>
 			</Fragment>
 		)
