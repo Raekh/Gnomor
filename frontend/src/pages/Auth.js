@@ -4,9 +4,9 @@ import './Auth.css'
 import AuthContext from '../context/auth-context'
 
 class AuthPage extends Component {
-	state = {
-		isLogin : true
-	}
+	// state = {
+	// 	isLogin : true
+	// }
 
 	static contextType = AuthContext
 
@@ -14,7 +14,11 @@ class AuthPage extends Component {
 		super(props)
 		this.emailEl = React.createRef()
 		this.passwordEl = React.createRef()
+		this.state = {
+			isLogin : true
+		}
 	}
+
 	handleSwitch = () => {
 		this.setState(prevState => {
 			return {
