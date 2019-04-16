@@ -6,9 +6,18 @@ body {
 
 
 .form-control label,
-.form-control input {
+.form-control input,
+.form-control textarea {
+  outline: none;
   width: 100%;
   display: block;
+}
+
+.form-control input,
+.form-control textarea {
+  /* padding: 2%; */
+  /* padding-left: 1rem; */
+  border: 3px solid #01d1d1;
 }
 
 .form-control label {
