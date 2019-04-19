@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import Modal from '../components/Modal/Modal'
 import Backdrop from '../components/Backdrop/Backdrop'
 
+import EventList from '../components/Events/EventList/EventList'
 import './Events.css'
 import AuthContext from '../context/auth-context'
 
@@ -80,7 +81,12 @@ class EventsPage extends Component {
 		const price = +this.priceEl.current.value
 		const description = this.descriptionEl.current.value
 
-		if (title.trim().length === 0 || price < 0 || date.trim().length === 0 || description.trim().length === 0) {
+		if (
+			title.trim().length === 0 ||
+			price < 0 ||
+			date.trim().length === 0 ||
+			description.trim().length === 0
+		) {
 			return
 		}
 
@@ -133,8 +139,23 @@ class EventsPage extends Component {
 				return res.json()
 			})
 			.then(resData => {
-				console.log(resData)
-				this.fetchEvents()
+				this.setState(prevState => {
+					const updatedEvents = [ ...prevState.events ]
+					console.log('%c updatedEvents', 'color:red', updatedEvents)
+					let { _id, title, description, date, price } = resData.data.createEvent
+					updatedEvents.push({
+						_id         : _id,
+						title,
+						description,
+						date,
+						price,
+						creator     : {
+							_id : this.context.userId
+						}
+					})
+					console.log('%c updatedEvents', 'color:green', updatedEvents)
+					return { events: updatedEvents  }
+				})
 			})
 			.catch(err => {
 				console.log(err)
@@ -185,16 +206,7 @@ class EventsPage extends Component {
 						</button>
 					</div>
 				)}
-				<ul className="events__list">
-					{this.state.events.map((event, key) => {
-						return (
-							<li key={key} className="events__list-item">
-								{event.title} - <em>{event.description}</em>
-							</li>
-						)
-					})}
-					{this.state.events.length === 0 && <li className="events__list-item">No events.</li>}
-				</ul>
+				<EventList events={this.state.events} authUserId={this.context.userId} />
 			</Fragment>
 		)
 	}
