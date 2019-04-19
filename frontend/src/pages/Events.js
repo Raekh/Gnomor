@@ -21,6 +21,8 @@ class EventsPage extends Component {
 		this.descriptionEl = React.createRef()
 	}
 
+	isActive = true
+
 	componentDidMount () {
 		this.fetchEvents()
 	}
@@ -146,23 +148,25 @@ class EventsPage extends Component {
 				return res.json()
 			})
 			.then(resData => {
-				this.setState(prevState => {
-					const updatedEvents = [ ...prevState.events ]
-					console.log('%c updatedEvents', 'color:red', updatedEvents)
-					let { _id, title, description, date, price } = resData.data.createEvent
-					updatedEvents.push({
-						_id         : _id,
-						title,
-						description,
-						date,
-						price,
-						creator     : {
-							_id : this.context.userId
-						}
+				if (this.isActive) {
+					this.setState(prevState => {
+						const updatedEvents = [ ...prevState.events ]
+						console.log('%c updatedEvents', 'color:red', updatedEvents)
+						let { _id, title, description, date, price } = resData.data.createEvent
+						updatedEvents.push({
+							_id         : _id,
+							title,
+							description,
+							date,
+							price,
+							creator     : {
+								_id : this.context.userId
+							}
+						})
+						console.log('%c updatedEvents', 'color:green', updatedEvents)
+						return { events: updatedEvents }
 					})
-					console.log('%c updatedEvents', 'color:green', updatedEvents)
-					return { events: updatedEvents }
-				})
+				}
 			})
 			.catch(err => {
 				console.log(err)
@@ -185,7 +189,52 @@ class EventsPage extends Component {
 		})
 	}
 
-	bookEventHandler = () => {}
+	bookEventHandler = () => {
+		if (!this.context.token) {
+			this.setState({ selectedEvent: null })
+			return
+		}
+
+		const requestBody = {
+			query : `
+			mutation {
+				bookEvent(eventId: "${this.state.selectedEvent._id}")
+				{
+					createdAt
+					updatedAt
+				}
+			}
+			`
+		}
+
+		fetch('http://localhost:8000/graphql', {
+			method  : 'POST',
+			body    : JSON.stringify(requestBody),
+			headers : {
+				'Content-Type' : 'application/json',
+				Authorization  : `Bearer ${this.context.token}`
+			}
+		})
+			.then(res => {
+				if (res.status !== 200 && res.status !== 201) {
+					throw new Error('Failed')
+				}
+				return res.json()
+			})
+			.then(resData => {
+				if (this.isActive) {
+					console.log(resData)
+					this.setState({ selectedEvent: null })
+				}
+			})
+			.catch(err => {
+				console.log(err)
+			})
+	}
+
+	componentWillUnmount () {
+		this.isActive = false
+	}
 
 	render () {
 		return (
@@ -227,7 +276,7 @@ class EventsPage extends Component {
 						canConfirm
 						onCancel={this.modalCancelHandler}
 						onConfirm={this.bookEventHandler}
-						confirmText="Book"
+						confirmText={this.context.token ? 'Book' : 'Confirm'}
 					>
 						<h1>{this.state.selectedEvent.title}</h1>
 						<h2>
