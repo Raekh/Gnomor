@@ -1,14 +1,23 @@
 const Event = require('../../models/event')
 const User = require('../../models/user')
 const Booking = require('../../models/booking')
+const DataLoader = require('dataloader')
 
 const { dateToString } = require('../../helpers/date')
+
+const eventLoader = new DataLoader(eventIds => {
+	return events(eventIds)
+})
+
+const userLoader = new DataLoader(eventIds => {
+	return User.find({ _id: { $in: eventIds } })
+})
 
 const transformUser = user => {
 	return {
 		...user._doc,
 		password      : null,
-		createdEvents : events.bind(this, user._doc.createdEvents)
+		createdEvents : () => eventLoader.loadMany.bind(this, user._doc.createdEvents)
 	}
 }
 
@@ -31,7 +40,7 @@ const transformBooking = booking => {
 }
 
 const events = async eventIds => {
-	const event = await Event.find({ _id: { $in: eventIds } })
+	const events = await Event.find({ _id: { $in: eventIds } })
 	try {
 		return events.map(event => {
 			return transformEvent(event)
@@ -43,15 +52,15 @@ const events = async eventIds => {
 
 const singleEvent = async eventId => {
 	try {
-		const event = await Event.findById(eventId)
-		return transformEvent(event)
+		const event = await eventLoader.load(eventId.toString())
+		return event
 	} catch (err) {
 		throw err
 	}
 }
 
 const user = async userId => {
-	const user = await User.findById(userId)
+	const user = await userLoader.load(userId.toString())
 	try {
 		return transformUser(user)
 	} catch (err) {
